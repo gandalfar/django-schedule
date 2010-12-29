@@ -1,3 +1,9 @@
+Hack:
+
+access via - /site_media/wdCalendar/wdCalendar/sample.html
+
+
+
 h1. Django-schedule
 
 A calendaring/scheduling application, featuring:
