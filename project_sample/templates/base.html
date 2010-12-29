@@ -16,6 +16,12 @@
             }
         </style>
         {% endif %}
+        
+        <link type="text/css" href="{{MEDIA_URL}}js/jquery-ui-1.7.1.custom.css" rel="Stylesheet" />
+        <script type="text/javascript" src="{{MEDIA_URL}}js/jquery.js"></script>
+        <script type="text/javascript" src="{{MEDIA_URL}}js/jquery-ui.js"></script>
+        <script src="{{MEDIA_URL}}js/ui.datepicker.js" type="text/javascript"></script>
+
         {% block extra_head %}
         {% endblock %}
 
@@ -24,6 +30,9 @@
 
 		{% block fc_json %}
 		{% endblock %}
+		
+		{% block extrahead %}{% endblock %}
+
     </head>
 
     <body>
@@ -41,6 +50,8 @@
 
             {% block body %}
             {% endblock %}
+            
+            {% block content %}{% endblock %}
 
         </div>
 
