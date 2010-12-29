@@ -18,6 +18,12 @@
         {% endif %}
         {% block extra_head %}
         {% endblock %}
+
+        <script type="text/javascript" src="{{ MEDIA_URL }}js/fullcalendar/fullcalendar.js"></script>
+        <link rel="stylesheet" href="{{ MEDIA_URL }}js/fullcalendar/fullcalendar.css" />
+
+		{% block fc_json %}
+		{% endblock %}
     </head>
 
     <body>
