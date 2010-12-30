@@ -6,7 +6,9 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^$', direct_to_template,{"template":"homepage.html"}),
+    url(r'^$', 'project_sample.views.index', name="index"),
+    
+    
     (r'^schedule/', include('schedule.urls')),
     (r'^todo/', include('todo.urls')),
     (r'^ajax/', 'project_sample.views.ajax'),

@@ -14,6 +14,10 @@ $(document).ready(function() {
     $('#slideToggle').click(function(){
         $(this).siblings('#TaskEdit').slideToggle();
     });
+    
+    
+    $('#id_event_start').datepicker({defaultDate: new Date(2010, 12 - 0, 31),});
+    
 });
 </script>
 
@@ -96,13 +100,31 @@ $(document).ready(function() {
 
 <hr />
 
-
 <h3>Add comment</h3>
 
     <textarea name="comment-body" rows="8" cols="40"></textarea>
     <p><input class="todo-button"type="submit" value="Submit"></p>
 
 </form>
+
+
+<hr />
+<h2>Add a working event for this task</h2>
+<form action="{% url todo-attach_event task.id %}" method="post" accept-charset="utf-8">
+    {{ item_event_form.as_p }}
+    <p><input type="submit" value="Continue &rarr;"></p>
+</form>
+
+<h2>You should work on these tasks on</h2>
+{% if events %}
+    <ul>
+    {% for event in events %}
+        <li>{{ event.title }} - {{ event.start }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <strong>never?!?</strong>
+{% endif %}
 
 <h3>Comments on this task</h3>    
 

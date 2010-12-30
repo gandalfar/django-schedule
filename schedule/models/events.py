@@ -13,6 +13,8 @@ from schedule.models.rules import Rule
 from schedule.models.calendars import Calendar
 from schedule.utils import OccurrenceReplacer
 
+from todo.models import Item
+
 class EventManager(models.Manager):
 
     def get_for_object(self, content_object, distinction=None, inherit=True):
@@ -33,6 +35,8 @@ class Event(models.Model):
     end_recurring_period = models.DateTimeField(_("end recurring period"), null = True, blank = True, help_text=_("This date is ignored for one time only events."))
     calendar = models.ForeignKey(Calendar, blank=True, null=True)
     objects = EventManager()
+    
+    item = models.ForeignKey(Item, blank=True, null=True)
 
     class Meta:
         verbose_name = _('event')

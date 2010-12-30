@@ -5,6 +5,35 @@ from django.contrib.auth.models import User,Group
 from todo.models import Item, List
 import datetime
 
+from schedule.models.events import Event
+from schedule.models.calendars import Calendar
+
+class AddItemEventForm(forms.Form):
+    event_start = forms.DateField(required=True,
+                                  widget=forms.DateTimeInput(attrs={'class':'due_date_picker'})
+                  )
+                  
+                  
+    def save(self, *args, **kwargs):
+        get = self.cleaned_data.get
+        print get('event_start')
+        
+        item = Item.objects.get(pk=kwargs['task_id'])
+        
+        calendar = Calendar.objects.get(slug='example')
+        
+        d = get('event_start')
+        start_date = datetime.datetime(d.year, d.month, d.day, 8)
+        end_date = datetime.datetime(d.year, d.month, d.day, 9)
+        e = Event(calendar=calendar,
+          creator=User.objects.get(pk=1),
+          start=start_date,
+          end=end_date,
+          title=item.title,
+          item=item
+        )
+        e.save()
+
 class AddListForm(ModelForm):    
     # The picklist showing allowable groups to which a new list can be added
     # determines which groups the user belongs to. This queries the form object

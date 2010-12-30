@@ -19,7 +19,7 @@ import datetime
 
 # Need for links in email templates
 current_site = Site.objects.get_current() 
-
+from todo.forms import AddItemEventForm
 
 @login_required
 def list_lists(request):
@@ -217,6 +217,21 @@ def view_list(request,list_id=0,list_slug=None,view_completed=0):
 
 
 @login_required
+def attach_event(request, task_id):
+    if request.POST:
+        form = AddItemEventForm(request.POST)
+        if form.is_valid():
+            e = form.save(task_id=task_id)
+            
+            if request.GET.get('redirect'):
+                return HttpResponseRedirect(request.GET.get('redirect'))
+            else:
+                return HttpResponseRedirect('/todo/task/%s' % task_id)
+        else:
+            print form.errors
+            
+
+@login_required
 def view_task(request,task_id):
 
     """
@@ -282,6 +297,10 @@ def view_task(request,task_id):
 
     else:
         request.user.message_set.create(message="You do not have permission to view/edit this task.")
+        
+    item_event_form = AddItemEventForm()
+    
+    events = task.event_set.all()
 
     return render_to_response('todo/view_task.html', locals(), context_instance=RequestContext(request))
 

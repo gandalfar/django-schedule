@@ -1,11 +1,19 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect, Http404, HttpResponse
+from django.template import RequestContext
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 
 import simplejson
-from schedule.models import *
 import datetime
 
+from schedule.models import *
+
+from todo.models import Item, List, Comment
+from todo.forms import AddListForm, AddItemForm, EditItemForm, AddExternalItemForm, SearchForm
+from todo.forms import AddItemEventForm
+
+@login_required
 def ajax(request):
     calendar = get_object_or_404(Calendar, slug='example')
     method = request.GET.get('method')
@@ -66,3 +74,15 @@ def ajax(request):
         print request.POST
     
     return HttpResponse(json, {})
+    
+@login_required
+def index(request):
+    items = Item.objects.filter(assigned_to=request.user, completed=0)
+    
+    item_event_form = AddItemEventForm()
+    
+    context = {'items': items,
+               'item_event_form': item_event_form
+              }
+    return render_to_response('index.html', context, 
+                              context_instance=RequestContext(request))

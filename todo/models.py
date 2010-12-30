@@ -6,7 +6,6 @@ from django.contrib.auth.models import User,Group
 import string, datetime
 from django.template.defaultfilters import slugify
 
-
 class List(models.Model):
     name = models.CharField(max_length=60)
     slug = models.SlugField(max_length=60,editable=False)
@@ -52,8 +51,7 @@ class Item(models.Model):
     created_by = models.ForeignKey(User, related_name='created_by')
     assigned_to = models.ForeignKey(User, related_name='todo_assigned_to')
     note = models.TextField(blank=True,null=True)
-    priority = models.PositiveIntegerField(max_length=3)
-    
+    priority = models.PositiveIntegerField(max_length=3)    
     # Model method: Has due date for an instance of this object passed?
     def overdue_status(self):
         "Returns whether the item's due date has passed or not."
