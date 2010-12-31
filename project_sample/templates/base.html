@@ -1,33 +1,24 @@
 {% load i18n %}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}" xml:lang="{{ LANGUAGE_CODE }}" lang="{{ LANGUAGE_CODE }}">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <title>{% if site_name %}{{ site_name }} : {% endif %}{% block head_title %}{% endblock %}</title>
-        <!--[if IE]><style>
-            div {
-                zoom: 1; /* trigger hasLayout */
-            }
-        </style><![endif]-->
-        {% if LANGUAGE_BIDI %}
-        <style type="text/css" media="screen">
-            div.right_panel {
-                float: left; /* hotfix for sidebar */
-            }
-        </style>
-        {% endif %}
         
-        <link type="text/css" href="{{MEDIA_URL}}js/jquery-ui-1.7.1.custom.css" rel="Stylesheet" />
-        <script type="text/javascript" src="{{MEDIA_URL}}js/jquery.js"></script>
-        <script type="text/javascript" src="{{MEDIA_URL}}js/jquery-ui.js"></script>
-        <script src="{{MEDIA_URL}}js/ui.datepicker.js" type="text/javascript"></script>
+        <script type='text/javascript' src="/site_media/js/jquery.js"></script>
+        <script type='text/javascript' src="/site_media/js/jquery-ui.js"></script>
+        
+        <link rel="stylesheet" href="{{ MEDIA_URL }}css/jquery-ui.css" type="text/css" />
+        <link rel="stylesheet" href="{{ MEDIA_URL }}css/grid.css" />
+
+        <link rel='stylesheet' type='text/css' href='/site_media/js/fullcalendar/fullcalendar.css' />
+        <script type='text/javascript' src='/site_media/js/fullcalendar/fullcalendar.min.js'></script>
+        <script type='text/javascript' src='/site_media/js/fullcalendar/custom.js'></script>
+
 
         {% block extra_head %}
         {% endblock %}
 
-        <script type="text/javascript" src="{{ MEDIA_URL }}js/fullcalendar/fullcalendar.js"></script>
-        <link rel="stylesheet" href="{{ MEDIA_URL }}js/fullcalendar/fullcalendar.css" />
-        <link rel="stylesheet" href="{{ MEDIA_URL }}css/grid.css" />
+        
 
 		{% block fc_json %}
 		{% endblock %}
@@ -38,15 +29,12 @@
         {% block calendar_head %}{% endblock %}
     </head>
 
-    <body>
-        <div id="body" class="container_12">
+    <body class="container_12">
             {% block body %}
             {% endblock %}
             
             {% block content %}
             {% endblock %}
-        </div>
-
         <div id="footer">{% block footer %}{% endblock %}</div>
 
     </body>

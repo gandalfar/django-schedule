@@ -13,62 +13,63 @@ from todo.models import Item, List, Comment
 from todo.forms import AddListForm, AddItemForm, EditItemForm, AddExternalItemForm, SearchForm
 from todo.forms import AddItemEventForm
 
-@login_required
+from pytz import timezone
+from babel.dates import format_datetime
+from django.conf import settings
+from time import localtime
+
+tz = timezone(settings.TIME_ZONE)
+
 def ajax(request):
     calendar = get_object_or_404(Calendar, slug='example')
-    method = request.GET.get('method')
-    get = request.POST.get
-    
-    if method == 'list':
+    method = request.GET.get('cmd')
+    get = request.GET.get
+
+    if method == 'read':
         data = []
         for event in calendar.event_set.all():
-            e = [event.id,
-                 event.title,
-                 event.start.strftime("%m/%d/%Y %H:%M"),
-                 event.end.strftime("%m/%d/%Y %H:%M"),
-                 0,
-                 0,
-                 0,
-                 8,
-                 1,
-                 'somewhere',
-                 event.description
-            ]
+            e = {'id': event.id,
+                 'title': event.title,
+                 'start': tz.localize(event.start).isoformat(),
+                 'end': tz.localize(event.end).isoformat(),
+                 'allDay': False,
+                }
             data.append(e)
-    
-        json = simplejson.dumps({'events': data})
-    elif method == 'add':
-        # {u'CalendarEndTime': [u'12/29/2010 10:30'], u'IsAllDayEvent': [u'0'], u'CalendarStartTime': [u'12/29/2010 10:00'], 
-        #  u'CalendarTitle': [u'test'], u'timezone': [u'1']
+        json = simplejson.dumps(data)
+        
+    elif method == 'create':
         e = Event(calendar=calendar,
                   creator=User.objects.get(pk=1),
-                  start=datetime.datetime.strptime(get('CalendarStartTime'), '%m/%d/%Y %H:%M'),
-                  end=datetime.datetime.strptime(get('CalendarEndTime'), '%m/%d/%Y %H:%M'),
-                  title=get('CalendarTitle')
+                  start=datetime.datetime.fromtimestamp(int(get('start'))),
+                  end=datetime.datetime.fromtimestamp(int(get('end'))),
+                  title=get('title')
         )
         e.save()
-        data = {'IsSuccess': True,
-                'Msg': 'add success',
-                'Data': e.id
-               }
+        data = e.id
         json = simplejson.dumps(data)
-    elif method == 'update':
-        event = Event.objects.get(pk=get('calendarId'))
-        event.start = datetime.datetime.strptime(get('CalendarStartTime'), '%m/%d/%Y %H:%M')
-        event.end = datetime.datetime.strptime(get('CalendarEndTime'), '%m/%d/%Y %H:%M')
+        
+    elif method == 'updatePos':
+        event = Event.objects.get(pk=get('id'))
+        event.start = datetime.datetime.fromtimestamp(int(get('start')))
+        event.end = datetime.datetime.fromtimestamp(int(get('end')))
         event.save()
         
-        data = {'IsSuccess': True,
-                'Msg': 'update was successful',
-                }
+        data = event.id
         json = simplejson.dumps(data)
-    elif method == 'remove':
-        event = Event.objects.get(pk=get('calendarId'))
+    
+    elif method == 'updateTitle':
+        event = Event.objects.get(pk=get('id'))
+        event.title = get('title')
+        event.save()
+        
+        data = event.id
+        json = simplejson.dumps(data)
+
+    
+    elif method == 'delete':
+        event = Event.objects.get(pk=get('id'))
         event.delete()
-        data = {'IsSuccess': True,
-        'Msg': 'removed!',
-        }
-        json = simplejson.dumps(data)
+        json = simplejson.dumps('')
     else:
         print request.GET
         print request.POST
