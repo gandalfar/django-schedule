@@ -38,11 +38,13 @@ def ajax(request):
         json = simplejson.dumps(data)
         
     elif method == 'create':
+        item = Item.objects.get(pk=get('itemId'))
         e = Event(calendar=calendar,
                   creator=User.objects.get(pk=1),
                   start=datetime.datetime.fromtimestamp(int(get('start'))),
                   end=datetime.datetime.fromtimestamp(int(get('end'))),
-                  title=get('title')
+                  title=get('title'),
+                  item=item
         )
         e.save()
         data = e.id

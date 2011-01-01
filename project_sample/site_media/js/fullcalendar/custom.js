@@ -70,6 +70,7 @@ function serverSave(ev) {
 function guiDrop(date, allDay) {
     // retrieve the dropped element's stored Event Object
     var originalEventObject = $(this).data('eventObject');
+    var item_id = $(this).attr('id').substr(5);
     
     // we need to copy it, so that multiple events don't have a reference to the same object
     var ev = $.extend({}, originalEventObject);
@@ -84,7 +85,7 @@ function guiDrop(date, allDay) {
         type : 'GET',
         url : loc,
         data : 'cmd=create&title=' + ev.title + '&start=' + ev.start + '&end='
-                + ev.end + '&allDay=' + ev.allDay,
+                + ev.end + '&allDay=' + ev.allDay + '&itemId='+item_id,
         success : function(msg) {
             if (msg.length > 8) {
                 $('<div>' + 'Probably location error\nid=' + msg + '</div>')
