@@ -2,25 +2,26 @@ h1. T3P modifications
 
 Idea of this branch is to create a different task of personal scheduling TODO application. Right now the front page consists of 'fullclaendar' UI and django-todo+django-schedule app. Idea is that you can drop your todo items to your schedule and define when to work on things.
 
-Quick and dirty usage:
+h2. Quick and dirty usage:
 
- cd django-schedule
- export PYTHONPATH=..
- cd project_sample
- ./manage.py syncdb
- ./manage.py load_example_data
+ * sudo easy_install pytz
+ * sudo easy_install vobject
+
+ * cd django-schedule
+ * export PYTHONPATH=..
+ * cd project_sample
+ * ./manage.py syncdb
+ * ./manage.py load_example_data
+ * ./manage.py runserver
  
- ./manage.py runserver
- 
- Go to /admin/ and create a new group and assign your user to it. This will make django-todo happy.
- Go to /todo/ and create a list. Then you can create new items and with it content for the /
+ * Go to /admin/ and create a new group and assign your user to it. This will make django-todo happy.
+ * Go to /todo/ and create a list. Then you can create new items and with it content for the /
 
 h2. Some notes
 
     this is more of a hack to see if we can get a prototype working within a few hours of work. For now all the scheduling is limited to 'example' calendar as it's hardcoded in some slugs.
     
  
-Nifty features from django-schedule:
+h2. Nifty features from django-schedule:
 
-    iCal feed:
-        /schedule/ical/calendar/1/
+ * iCal feed: /schedule/ical/calendar/1/
