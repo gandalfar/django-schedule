@@ -38,7 +38,10 @@ def ajax(request):
         json = simplejson.dumps(data)
         
     elif method == 'create':
-        item = Item.objects.get(pk=get('itemId'))
+        if get('itemId'):
+            item = Item.objects.get(pk=get('itemId'))
+        else:
+            item = None
         e = Event(calendar=calendar,
                   creator=User.objects.get(pk=1),
                   start=datetime.datetime.fromtimestamp(int(get('start'))),
