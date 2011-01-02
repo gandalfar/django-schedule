@@ -3,11 +3,13 @@ from django.conf.urls.defaults import *
 from django.views.generic.simple import direct_to_template
 
 from django.contrib import admin
+import django.contrib.auth
 admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^$', 'future_todo.views.index', name="index"),
     
+    (r'^accounts/', include('django.contrib.auth.urls')),
     
     (r'^schedule/', include('schedule.urls')),
     (r'^todo/', include('todo.urls')),
