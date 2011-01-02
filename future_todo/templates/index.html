@@ -80,7 +80,7 @@
 </div>
 
 <div class="grid_4 external-events">
-    <h1>Open items</h1>
+    <h1>Open items <a href="/todo/">add</a></h1>
         {% for item in items %}
                 <p><strong class="external-event" id="item-{{ item.id }}">{{ item.title }}</strong>
                     - <a href="{% url todo-task_detail item.id %}" target="_blank">due {{ item.due_date|naturalday }}</a>
