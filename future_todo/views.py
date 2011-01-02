@@ -20,8 +20,9 @@ from time import localtime
 
 tz = timezone(settings.TIME_ZONE)
 
+@login_required
 def ajax(request):
-    calendar = get_object_or_404(Calendar, slug='example')
+    calendar = get_object_or_404(Calendar, pk=1)
     method = request.GET.get('cmd')
     get = request.GET.get
 
