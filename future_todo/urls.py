@@ -6,12 +6,12 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^$', 'project_sample.views.index', name="index"),
+    url(r'^$', 'future_todo.views.index', name="index"),
     
     
     (r'^schedule/', include('schedule.urls')),
     (r'^todo/', include('todo.urls')),
-    (r'^ajax/', 'project_sample.views.ajax'),
+    (r'^ajax/', 'future_todo.views.ajax'),
 
     # Uncomment the admin/doc line below and add 'django.contrib.admindocs'
     # to INSTALLED_APPS to enable admin documentation:

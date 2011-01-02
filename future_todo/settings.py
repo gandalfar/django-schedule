@@ -68,7 +68,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
 )
 
-ROOT_URLCONF = 'project_sample.urls'
+ROOT_URLCONF = 'future_todo.urls'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -99,3 +99,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 FIRST_DAY_OF_WEEK = 1 # Monday
+
+
+try:
+    from localsettings import *
+except ImportError:
+    pass
