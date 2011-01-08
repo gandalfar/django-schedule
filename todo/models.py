@@ -31,7 +31,7 @@ class List(models.Model):
     # ex. http://tracks.frubsd.org/?$id
     cross_url = models.CharField(max_length=60, blank=True, null=True)
     list_colour = models.CommaSeparatedIntegerField(max_length=50, blank=True, null=True)
-       
+
     def save(self, *args, **kwargs):
         if not self.id:
             self.slug = slugify(self.name)
