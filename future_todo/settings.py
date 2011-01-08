@@ -88,6 +88,7 @@ INSTALLED_APPS = (
     'schedule',
     'todo',
     'south',
+    't3p'
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
