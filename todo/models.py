@@ -9,8 +9,30 @@ from django.template.defaultfilters import slugify
 class List(models.Model):
     name = models.CharField(max_length=60)
     slug = models.SlugField(max_length=60,editable=False)
-    # slug = models.SlugField(max_length=60)    
+    # slug = models.SlugField(max_length=60)
+        
+    # Users in same group can see same lists
     group = models.ForeignKey(Group)
+    
+    # Owner of the list (the one can change settings)
+    owner = models.ForeignKey(User)
+    
+    # API Engine (at the moment engines are stored as interger values
+    # but we need to figure it out, how this field can be more optimized
+    # in future use.
+    api_engine = models.IntegerField(blank=True, null=True)
+    api_url = models.CharField(max_length=60, blank=True, null=True )
+    api_username = models.CharField(max_length=60, blank=True, null=True)
+    api_password = models.CharField(max_length=60, blank=True, null=True)
+    api_token = models.CharField(max_length=60, blank=True, null=True)
+    
+    # Cross URL works same as interwiki urls - to simple redict
+    # tasks to customers IT. 
+    # ex. http://tracks.frubsd.org/?$id
+    cross_url = models.CharField(max_length=60, blank=True, null=True)
+    list_colour = models.CommaSeparatedIntegerField(max_length=50, blank=True, null=True)
+    
+    
     
     def save(self, *args, **kwargs):
         if not self.id:
@@ -43,6 +65,18 @@ class List(models.Model):
         
 class Item(models.Model):
     title = models.CharField(max_length=140)
+    
+    # For tracking external ID of task in external tasks tracking
+    # application
+    ext_id = models.IntegerField(blank=True, null=True)
+    
+    # Projects / Que
+    """
+    TODO - needs external list with projects/que names connect
+           with foreign keys.
+    """
+    project = models.IntegerField(blank=True, null=True)
+    
     list = models.ForeignKey(List)
     created_date = models.DateField()    
     due_date = models.DateField(blank=True,null=True,)
@@ -52,6 +86,7 @@ class Item(models.Model):
     assigned_to = models.ForeignKey(User, related_name='todo_assigned_to')
     note = models.TextField(blank=True,null=True)
     priority = models.PositiveIntegerField(max_length=3)    
+    
     # Model method: Has due date for an instance of this object passed?
     def overdue_status(self):
         "Returns whether the item's due date has passed or not."
@@ -78,17 +113,37 @@ class Item(models.Model):
         
 
 class Comment(models.Model):    
-    """
-    Not using Django's built-in comments becase we want to be able to save 
-    a comment and change task details at the same time. Rolling our own since it's easy.
-    """
-    author = models.ForeignKey(User)
-    task = models.ForeignKey(Item)
-    date = models.DateTimeField(default=datetime.datetime.now)
-    body = models.TextField(blank=True)
+	"""
+	Not using Django's built-in comments becase we want to be able to save 
+	a comment and change task details at the same time. Rolling our own since it's easy.
+	"""
+	author = models.ForeignKey(User)
+	task = models.ForeignKey(Item)
+	date = models.DateTimeField(default=datetime.datetime.now)
+	body = models.TextField(blank=True)
+	
+	def __unicode__(self):        
+		return '%s - %s' % (
+			self.author, 
+			self.date, 
+			)        
+
+class Effort(models.Model):
+	"""
+	Effort tracking for specific item
+	TODO
+	"""
+	author = models.ForeignKey(User)
+	task = models.ForeignKey(Item)
+	date = models.DateTimeField(default=datetime.datetime.now)
+	body = models.TextField(blank=True)
+    # Adds effort in time
+	duration = models.IntegerField(blank=False, null=False)
     
-    def __unicode__(self):        
-        return '%s - %s' % (
-                self.author, 
-                self.date, 
-                )        
+    
+	def __unicode__(self):        
+		return '%s - %s' % (
+			self.author, 
+			self.date,
+			self.effort,
+			)
