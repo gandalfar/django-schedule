@@ -5,3 +5,5 @@
 /future_todo/localsettings.py
 /docs/_build/
 django_schedule.egg-info
+*.svn*
+.svn*
