@@ -11,7 +11,7 @@ h2. Quick and dirty usage:
  * export PYTHONPATH=..
  * cd project_sample
  * ./manage.py syncdb
- * ./manage.py load_example_data
+ * ./manage.py load_example_data (optional, you can now also create calendars using /admin/ if you don't like 'example')
  * ./manage.py runserver
  
  * Go to /admin/ and create a new group and assign your user to it. This will make django-todo happy.
