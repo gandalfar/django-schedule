@@ -1,5 +1,5 @@
 from django.contrib import admin
-from todo.models import Item, User, List, Comment
+from todo.models import Item, User, List, Comment, Effort
 
 class ItemAdmin(admin.ModelAdmin):
     list_display = ('title', 'list', 'priority', 'due_date')
@@ -10,4 +10,5 @@ class ItemAdmin(admin.ModelAdmin):
 
 admin.site.register(List)
 admin.site.register(Comment)
+admin.site.register(Effort)
 admin.site.register(Item,ItemAdmin)

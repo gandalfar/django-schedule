@@ -76,14 +76,24 @@ class Item(models.Model):
     project = models.IntegerField(blank=True, null=True)
     
     list = models.ForeignKey(List)
-    created_date = models.DateField()    
+    created_date = models.DateField()
     due_date = models.DateField(blank=True,null=True,)
     completed = models.BooleanField()
     completed_date = models.DateField(blank=True,null=True)
+
+    """
+    FIXME: 	created_by - can be somebody from external tasks tracking
+			programs, so in long run this should be changed
+	"""
     created_by = models.ForeignKey(User, related_name='created_by')
     assigned_to = models.ForeignKey(User, related_name='todo_assigned_to')
     note = models.TextField(blank=True,null=True)
     priority = models.PositiveIntegerField(max_length=3)    
+    payable = models.BooleanField(blank=False,null=False)
+    # this used to do a timestamped when objected has been updated
+    last_sync = models.DateTimeField(blank=True,null=True)
+    
+    
     
     # Model method: Has due date for an instance of this object passed?
     def overdue_status(self):
@@ -143,5 +153,5 @@ class Effort(models.Model):
 		return '%s - %s' % (
 			self.author, 
 			self.date,
-			self.effort,
+			self.duration,
 			)

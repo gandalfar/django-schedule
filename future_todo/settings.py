@@ -1,6 +1,7 @@
 # Django settings for project_sample project.
 import os
 
+
 PROJECT_DIR = os.path.abspath(os.path.dirname(__file__))
 
 DEBUG = True
@@ -11,6 +12,7 @@ ADMINS = (
 )
 
 MANAGERS = ADMINS
+
 
 DATABASE_ENGINE = 'sqlite3'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
 DATABASE_NAME = 'project_sample.db'             # Or path to database file if using sqlite3.
