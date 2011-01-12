@@ -22,7 +22,14 @@ tz = timezone(settings.TIME_ZONE)
 
 @login_required
 def ajax(request):
-    calendar = get_object_or_404(Calendar, pk=1)
+    #calendar = get_object_or_404(Calendar, pk=1)
+    #calendar = Calendar.objects.get_or_creat
+    try:
+        calendar = Calendar.objects.all()[0]
+    except:
+        calendar = Calendar(name='calendar', slug='calendar')
+        calendar.save()
+        
     method = request.GET.get('cmd')
     get = request.GET.get
 
