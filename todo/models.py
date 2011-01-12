@@ -59,7 +59,9 @@ class List(models.Model):
         
         
 
-
+class InternalManager(models.Manager):
+    def get_query_set(self):
+        return super(InternalManager, self).get_query_set().filter(list__api_engine=None)
         
 class Item(models.Model):
     title = models.CharField(max_length=140)
@@ -80,6 +82,8 @@ class Item(models.Model):
     due_date = models.DateField(blank=True,null=True,)
     completed = models.BooleanField()
     completed_date = models.DateField(blank=True,null=True)
+    
+    internal = InternalManager()
 
     """
     FIXME: 	created_by - can be somebody from external tasks tracking
