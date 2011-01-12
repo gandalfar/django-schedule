@@ -132,7 +132,11 @@ def MatchItems(workingList):
             smtg.
             """
             
-            new = Item(title=task.find("description").text,list = workingList, created_date=task.find("created-at").text, created_by=User.objects.get(username="a"), assigned_to=User.objects.get(username="a"), priority=999)
+            user = User.objects.all().order_by('id')[0]
+            
+            new = Item(title=task.find("description").text,list = workingList, 
+                       created_date=task.find("created-at").text, created_by=user, 
+                       assigned_to=user, priority=999)
             
             ## Some debugging about date
             print "0: %s " % (new.title)
