@@ -14,7 +14,11 @@ import httplib
 import base64
 import urllib
 import urllib2
-from elementtree import ElementTree as ET
+
+try:
+    from elementtree import ElementTree as ET
+except:
+    import xml.etree.ElementTree as ET
 
 sys.path.append('../../')
 sys.path.append('../')
