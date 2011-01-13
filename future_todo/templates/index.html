@@ -37,6 +37,10 @@
                 });
             });
             
+            
+            
+            //fancy accordion
+            $( "#accordion" ).accordion();
         });
     </script>
     
@@ -81,11 +85,18 @@
 
 <div class="grid_4 external-events">
     <h1>Open items <a href="/todo/">add</a></h1>
-        {% for item in items %}
-                <p><strong class="external-event" id="item-{{ item.id }}">{{ item.title }}</strong>
-                    - <a href="{% url todo-task_detail item.id %}" target="_blank">due {{ item.due_date|naturalday }}</a>
-                </p>
-        {% endfor %}
+        <div id="accordion">
+            {% regroup items by list.name as items_list %}
+            {% for group in items_list %}
+                <h3><a href="#">{{ group.grouper }}</a></h3>
+                <div>
+                {% for item in group.list %}
+                        <p><strong class="external-event" id="item-{{ item.id }}">{{ item.title }}</strong>
+                            - <a href="{% url todo-task_detail item.id %}" target="_blank">due {{ item.due_date|naturalday }}</a></p>
+                {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
     <div id='datepicker'></div>
 </div>
 {% endblock %}

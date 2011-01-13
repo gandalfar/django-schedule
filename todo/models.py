@@ -83,7 +83,7 @@ class Item(models.Model):
     completed = models.BooleanField()
     completed_date = models.DateField(blank=True,null=True)
     
-    internal = InternalManager()
+    #internal = InternalManager()
 
     """
     FIXME: 	created_by - can be somebody from external tasks tracking
