@@ -78,9 +78,9 @@ class Item(models.Model):
     project = models.IntegerField(blank=True, null=True)
     
     list = models.ForeignKey(List)
-    created_date = models.DateField()
+    created_date = models.DateField(default=datetime.datetime.now)
     due_date = models.DateField(blank=True,null=True,)
-    completed = models.BooleanField()
+    completed = models.BooleanField(default=False)
     completed_date = models.DateField(blank=True,null=True)
     
     #internal = InternalManager()
@@ -92,7 +92,7 @@ class Item(models.Model):
     created_by = models.ForeignKey(User, related_name='created_by')
     assigned_to = models.ForeignKey(User, related_name='todo_assigned_to')
     note = models.TextField(blank=True,null=True)
-    priority = models.PositiveIntegerField(max_length=3)    
+    priority = models.PositiveIntegerField(max_length=3, default=999)
     payable = models.BooleanField(blank=False,null=False)
     # this used to do a timestamped when objected has been updated
     last_sync = models.DateTimeField(blank=True,null=True)

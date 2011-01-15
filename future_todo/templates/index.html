@@ -41,10 +41,12 @@
                 });
             });
             
-            
-            
             //fancy accordion
-            $( "#accordion" ).accordion();
+            var options = {collapsible: true}
+            if (jQuery.url.attr('anchor')) {
+                options['active'] = '#'+jQuery.url.attr('anchor');
+            };
+            $( "#accordion" ).accordion(options);
         });
     </script>
     
@@ -88,11 +90,11 @@
 </div>
 
 <div class="grid_4 external-events">
-    <h1>Open items <a href="/todo/">add</a></h1>
+    <h1><a href="/todo/">Manage lists</a></h1>
         <div id="accordion">
             {% regroup items by list.name as items_list %}
             {% for group in items_list %}
-                <h3><a href="#">{{ group.grouper }}</a></h3>
+                <h3 id="list-{{ group.list.0.list.id }}"><a href="#">{{ group.grouper }}</a></h3>
                 <div>
                 {% for item in group.list %}
                         <p><strong class="external-event" id="item-{{ item.id }}">{{ item.title }}</strong>
@@ -100,6 +102,13 @@
                 {% endfor %}
                 </div>
             {% endfor %}
+                <h3><a href="#">Add new task</a></h3>
+                <div>
+                    <form action="{% url task_add %}" method="POST" accept-charset="utf-8">
+                        <p>{{ add_item_form.as_p }}</p>
+                        <p><input type="submit" value="Submit &rarr;"></p>
+                    </form>
+                </div>
         </div>
 </div>
 {% endblock %}

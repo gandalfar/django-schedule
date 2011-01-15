@@ -18,6 +18,8 @@ from babel.dates import format_datetime
 from django.conf import settings
 from time import localtime
 
+from t3p.forms import AddItemForm
+
 tz = timezone(settings.TIME_ZONE)
 
 @login_required
@@ -90,13 +92,23 @@ def ajax(request):
     return HttpResponse(json, {})
     
 @login_required
+def task_add(request):
+    if request.POST:
+        add_item_form = AddItemForm(request.POST.copy())
+        if add_item_form.is_valid():
+            form = add_item_form.save(request.user)
+            return HttpResponseRedirect('/#list-%s' % form.list.id)
+    
+@login_required
 def index(request):
     items = Item.objects.filter(assigned_to=request.user, completed=0)
     
     item_event_form = AddItemEventForm()
+    add_item_form = AddItemForm()
     
     context = {'items': items,
-               'item_event_form': item_event_form
+               'item_event_form': item_event_form,
+               'add_item_form': add_item_form
               }
     return render_to_response('index.html', context, 
                               context_instance=RequestContext(request))
