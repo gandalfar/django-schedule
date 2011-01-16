@@ -70,7 +70,7 @@ class tracksplugin(plugin):
     """Concrete class for foo plugin."""
 
         
-    def getFeed(list):
+    def getFeed(self,list):
         url = "%s/todos.xml" % (list.api_url)
         
         # debug
@@ -84,15 +84,15 @@ class tracksplugin(plugin):
         feed = urllib2.urlopen(url)
         return feed
         
-    def getExternalTasks(feed):
+    def getExternalTasks(self,feed):
         tree = ET.parse(feed)
         Tasks = tree.findall("todo")
         # debug
         print "Found %s tasks" % len(Tasks)
         return Tasks
         
-    def MatchItems(list):
-        Tasks = getExternalTasks(getFeed())
+    def MatchItems(self,list):
+        Tasks = self.getExternalTasks(self.getFeed(list))
         for task in Tasks:
             """ http://www.djangoproject.com/documentation/models/get_or_create/ """
             #item = Item.objects.get(list=list, ext_id=task.find("id").text)
@@ -143,7 +143,7 @@ class tracksplugin(plugin):
     def run(self):
         #do something here
         list = self.list
-        self.MatchItems()
+        self.MatchItems(list)
         output_log = "You called me with: %s, %s, %s, %s" % (list.api_url, list.api_username, list.api_password, list.api_token)
         return output_log
         
