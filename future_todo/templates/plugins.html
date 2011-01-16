@@ -1,0 +1,13 @@
+{% extends "site_base.html" %}
+
+{% block body %}
+
+<h2>Plugins</h2>
+
+<ul>
+{% for plugin in plugins_list  %}
+    <li>{{ plugin.name }} - {{ plugin.description }} <a href="/plugins/run/{{ forloop.counter0 }}">run me</a></li>
+{% endfor %}
+</ul>
+
+{% endblock %}
