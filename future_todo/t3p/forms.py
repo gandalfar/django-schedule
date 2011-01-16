@@ -8,7 +8,6 @@ import datetime
 def _get_task_list():
     lists = []
     for li in List.objects.filter(api_url=""):
-        print [li.api_url]
         lists.append((li.id, li.name))
     return lists
 

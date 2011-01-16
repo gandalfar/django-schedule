@@ -6,7 +6,20 @@
 
 <ul>
 {% for plugin in plugins_list  %}
-    <li>{{ plugin.name }} - {{ plugin.description }} <a href="/plugins/run/{{ forloop.counter0 }}">run me</a></li>
+    <li>{{ plugin.name }} - {{ plugin.description }}</li>
+{% endfor %}
+</ul>
+
+
+<h2>Lists</h2>
+<ul>
+{% for list in lists  %}
+    <li>{{ list.name }} using engine: {{ list.api_engine }}
+        {% if list.api_engine %}
+            <a href="/plugins/list/{{ list.id }}/run">run me</a>
+        {% endif %}
+        
+    </li>
 {% endfor %}
 </ul>
 

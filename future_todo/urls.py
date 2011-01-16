@@ -16,7 +16,9 @@ urlpatterns = patterns('',
     (r'^ajax/', 'future_todo.views.ajax'),
     
     url(r'^task_add', 'future_todo.views.task_add', name="task_add"),
+    url(r'^plugins/list/(?P<list_id>\d{1,4})/run', 'future_todo.views.list_run', name="list_run"),
     url(r'^plugins', 'future_todo.views.plugins', name="plugins"),
+
 
     # Uncomment the admin/doc line below and add 'django.contrib.admindocs'
     # to INSTALLED_APPS to enable admin documentation:

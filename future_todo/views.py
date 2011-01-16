@@ -118,7 +118,26 @@ def index(request):
                               
 def plugins(request):
     plugins_list = plugin_handler.get_plugins()
+    lists = List.objects.all()
         
-    context = {'plugins_list': plugins_list}
+    context = {'plugins_list': plugins_list,
+               'lists': lists}
     return render_to_response('plugins.html', context, 
                               context_instance=RequestContext(request))
+
+
+def list_run(request, list_id):
+    mylist = get_object_or_404(List, pk=list_id)
+    
+    output = 'No plugin with this name found. Expected: %s' % mylist.api_engine
+    plugin_list = plugin_handler.get_plugins()
+    
+    for plugin in plugin_list:
+        if plugin.name == mylist.api_engine:
+            output = plugin(mylist).run()
+    
+    context = {'output': output}
+    return render_to_response('list_run.html', context, 
+                              context_instance=RequestContext(request))
+
+    

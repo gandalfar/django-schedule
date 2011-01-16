@@ -20,7 +20,9 @@ class List(models.Model):
     # API Engine (at the moment engines are stored as interger values
     # but we need to figure it out, how this field can be more optimized
     # in future use.
-    api_engine = models.IntegerField(blank=True, null=True)
+    
+    #api_engine = models.IntegerField(blank=True, null=True)
+    api_engine = models.CharField(blank=True, null=True, max_length=250)
     api_url = models.CharField(max_length=60, blank=True, null=True )
     api_username = models.CharField(max_length=60, blank=True, null=True)
     api_password = models.CharField(max_length=60, blank=True, null=True)
