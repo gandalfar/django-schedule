@@ -2,6 +2,7 @@ from django.db import models
 from django import forms
 from django.forms import ModelForm
 from django.contrib.auth.models import User,Group
+from django.conf import settings
 from todo.models import Item, List
 import datetime
 
@@ -34,6 +35,11 @@ class AddItemEventForm(forms.Form):
         )
         e.save()
 
+def _get_plugins():
+    plugins_list = [("", "No plugin"),]
+    for plugin in settings.plugin_handler.get_plugins(): plugins_list.append((plugin.__module__, plugin.__name__))
+    return plugins_list
+
 class AddListForm(ModelForm):    
     # The picklist showing allowable groups to which a new list can be added
     # determines which groups the user belongs to. This queries the form object
@@ -41,6 +47,7 @@ class AddListForm(ModelForm):
     def __init__(self, user, *args, **kwargs):
         super(AddListForm, self).__init__(*args, **kwargs)
         self.fields['group'].queryset = Group.objects.filter(user=user)
+        self.fields['api_engine'] = forms.ChoiceField(choices=_get_plugins(), required=False)
 
     class Meta:
         model = List

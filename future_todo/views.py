@@ -20,8 +20,6 @@ from time import localtime
 
 from t3p.forms import AddItemForm
 
-from t3p.views import plugin_handler
-
 tz = timezone(settings.TIME_ZONE)
 
 @login_required
@@ -117,7 +115,7 @@ def index(request):
                               context_instance=RequestContext(request))
                               
 def plugins(request):
-    plugins_list = plugin_handler.get_plugins()
+    plugins_list = settings.plugin_handler.get_plugins()
     lists = List.objects.all()
         
     context = {'plugins_list': plugins_list,
