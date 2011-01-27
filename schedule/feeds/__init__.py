@@ -16,7 +16,7 @@ class UpcomingEventsFeed(Feed):
     def get_object(self, bits):
         if len(bits) != 1:
             raise ObjectDoesNotExist
-        return Calendar.objects.get(pk=bits[0])
+        return Calendar.objects.get(guid=bits[0])
     
     def link(self, obj):
         if not obj:
@@ -48,7 +48,7 @@ class UpcomingEventsFeed(Feed):
 class CalendarICalendar(ICalendarFeed):
     def items(self):
         cal_id = self.args[1]
-        cal = Calendar.objects.get(pk=cal_id)
+        cal = Calendar.objects.get(guid=cal_id)
         
         return cal.events.all()
 

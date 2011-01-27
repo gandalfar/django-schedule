@@ -13,7 +13,6 @@ EVENT_ITEMS = (
 )
 
 class ICalendarFeed(object):
-
     def __call__(self, *args, **kwargs):
         self.args = args
         self.kwargs = kwargs

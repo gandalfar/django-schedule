@@ -10,6 +10,7 @@ from django.template.defaultfilters import slugify
 import datetime
 from dateutil import rrule
 from schedule.utils import EventListManager
+from django_extensions.db.fields import UUIDField
 
 class CalendarManager(models.Manager):
     """
@@ -134,6 +135,7 @@ class Calendar(models.Model):
 
     name = models.CharField(_("name"), max_length = 200)
     slug = models.SlugField(_("slug"),max_length = 200)
+    guid = UUIDField()
     objects = CalendarManager()
 
     class Meta:
