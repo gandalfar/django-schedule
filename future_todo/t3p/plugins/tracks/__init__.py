@@ -125,9 +125,9 @@ class tracksplugin(plugin):
                         assigned_to=user, priority=999)
                 
                 ## Some debugging about date
-                print "0: %s " % (new.title)
-                print "1: %s\t\t%s" % (task.find("due").text, new.due_date)
-                print "2: %s\t\t%s" % (task.find("created-at").text, new.created_date)
+                self.log.append("0: %s " % (new.title))
+                self.log.append("1: %s\t\t%s" % (task.find("due").text, new.due_date))
+                self.log.append("2: %s\t\t%s" % (task.find("created-at").text, new.created_date))
                 
                 """ 
                 FIXME:  when saved create_date will be changed to now(), since
@@ -139,13 +139,14 @@ class tracksplugin(plugin):
     def __init__(self, list):
         print "Initializing Tracks plugin"
         self.list = list
+        self.log = []
         
     def run(self):
         #do something here
         list = self.list
         self.MatchItems(list)
-        output_log = "You called me with: %s, %s, %s, %s" % (list.api_url, list.api_username, list.api_password, list.api_token)
-        return output_log
+        self.log.append("You called me with: %s, %s, %s, %s" % (list.api_url, list.api_username, list.api_password, list.api_token))
+        return self.log
         
     name = "tracks"
     description = "Plugin for Tracks 1.7.x (http://www.getontracks.org/)"
