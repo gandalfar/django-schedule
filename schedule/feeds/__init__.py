@@ -47,7 +47,7 @@ class UpcomingEventsFeed(Feed):
 
 class CalendarICalendar(ICalendarFeed):
     def items(self):
-        cal_id = self.args[1]
+        cal_id = self.args[1].split('/')[1]
         cal = Calendar.objects.get(guid=cal_id)
         
         return cal.events.all()
