@@ -42,10 +42,12 @@
             });
             
             //fancy accordion
-            var options = {collapsible: true}
-            if (jQuery.url.attr('anchor')) {
-                options['active'] = '#'+jQuery.url.attr('anchor');
-            };
+            var options = {collapsible: true,
+                           autoHeight: true,
+                           navigation: true,
+                           fillSpace: true
+                           
+                             }
             $( "#accordion" ).accordion(options);
         });
     </script>
@@ -74,7 +76,10 @@
             font-size: 11px;
             color: #666;
             }
-
+        
+        .task-sidebar {
+            height: 650px;
+        }
     </style>
 {% endblock %}
 
@@ -89,12 +94,12 @@
     </div>
 </div>
 
-<div class="grid_4 external-events">
+<div class="grid_4 external-events task-sidebar">
     <h1><a href="/todo/">Manage lists</a></h1>
         <div id="accordion">
             {% regroup items by list.name as items_list %}
             {% for group in items_list %}
-                <h3 id="list-{{ group.list.0.list.id }}"><a href="#">{{ group.grouper }}</a></h3>
+                <h3 id="list-{{ group.list.0.list.id }}" class="task-list"><a href="#list-{{ group.list.0.list.id }}">{{ group.grouper }}</a></h3>
                 <div>
                 {% for item in group.list %}
                         <p><strong class="external-event" id="item-{{ item.id }}">{{ item.title }}</strong>

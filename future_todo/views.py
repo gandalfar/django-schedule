@@ -101,7 +101,7 @@ def task_add(request):
     
 @login_required
 def index(request):
-    items = Item.objects.filter(assigned_to=request.user, completed=0)
+    items = Item.objects.filter(assigned_to=request.user, completed=0).order_by('list', 'due_date')
     
     item_event_form = AddItemEventForm()
     add_item_form = AddItemForm()
