@@ -1,6 +1,6 @@
 from django import forms 
 from django.shortcuts import render_to_response
-from todo.models import Item, List, Comment
+from todo.models import Item, List, Comment, Effort
 from todo.forms import AddListForm, AddItemForm, EditItemForm, AddExternalItemForm, SearchForm
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
@@ -14,6 +14,7 @@ from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.db.models import Q
+from django.db.models import Sum
 
 import datetime
 
@@ -212,7 +213,8 @@ def view_list(request,list_id=0,list_slug=None,view_completed=0):
 
     if request.user.is_staff:
         can_del = 1
-
+    task_list = task_list.annotate(sum_efforts=Sum('effort__duration'))
+    
     return render_to_response('todo/view_list.html', locals(), context_instance=RequestContext(request))
 
 
@@ -240,6 +242,8 @@ def view_task(request,task_id):
 
     task = get_object_or_404(Item, pk=task_id)
     comment_list = Comment.objects.filter(task=task_id)
+    effort_list = Effort.objects.filter(task=task_id)
+    
         
     # Before doing anything, make sure the accessing user has permission to view this item.
     # Determine the group this task belongs to, and check whether current user is a member of that group.
@@ -253,6 +257,17 @@ def view_task(request,task_id):
 
              if form.is_valid():
                  form.save()
+                 
+                 # Also save submitted effort if not empty
+                 if request.POST['effort-body']:
+                     e = Effort(
+                         author=request.user, 
+                         task=task,
+                         body=request.POST['effort-body'],
+                         duration=request.POST['effort-duration'],
+                     )
+                     #print "New effort %s" % task.effort()
+                     e.save()
                  
                  # Also save submitted comment, if non-empty
                  if request.POST['comment-body']:
@@ -427,8 +442,8 @@ def search(request):
                           context_instance=RequestContext(request))
 
 
-
-
-
+#Item.objects.annotate(sum_efforts=Sum('effort__duration'))
+#task_list = Item.objects.filter(completed=0).annotate(sum_efforts=Sum('effort__duration'))
+#print [(i.sum_efforts, i.pk, i.title) for i in task_list[:10]]
 
     

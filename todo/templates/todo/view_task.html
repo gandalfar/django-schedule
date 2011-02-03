@@ -100,9 +100,25 @@ $(document).ready(function() {
 
 <hr />
 
+<h3>Add effort</h3>
+<p>
+    Time: <select name="effort-duration">
+        <option value="15">15m</option>
+        <option value="30">30m</option>
+        <option value="45">45m</option>
+        <option value="60">1h</option>
+        <option value="90">1,5h</option>
+        <option value="120">2h</option>
+        <option value="150">2,5h</option>
+        <option value="180">3h</option>
+    </select>
+    </p>
+    <textarea name="effort-body" rows="3" cols="80"></textarea>
+    <p><input class="todo-button"type="submit" value="Submit"></p>
+
 <h3>Add comment</h3>
 
-    <textarea name="comment-body" rows="8" cols="40"></textarea>
+    <textarea name="comment-body" rows="4" cols="80"></textarea>
     <p><input class="todo-button"type="submit" value="Submit"></p>
 
 </form>
@@ -125,6 +141,17 @@ $(document).ready(function() {
 {% else %}
     <strong>never?!?</strong>
 {% endif %}
+
+<h3>Effort on this task</h3>    
+
+<div class="task_comments">
+{% for effort in effort_list %}
+    <p><strong>{{ effort.author.first_name }} {{ effort.author.last_name }}, {{ effort.date|date:"F d Y P" }}, {{ effort.duration }}</strong> </p>
+    {{ effort.body|safe|urlize|linebreaks }}
+{% empty %}
+<p>No Effort</p>
+{% endfor %}
+</div>
 
 <h3>Comments on this task</h3>    
 

@@ -7,11 +7,15 @@ from django.contrib.auth.decorators import login_required
 import simplejson
 import datetime
 
+
 from schedule.models import *
 
-from todo.models import Item, List, Comment
+from todo.models import Item, List, Comment, Effort
 from todo.forms import AddListForm, AddItemForm, EditItemForm, AddExternalItemForm, SearchForm
 from todo.forms import AddItemEventForm
+
+# For handeling with plugins
+from future_todo.t3p.views import plugin, plugin_handler
 
 from pytz import timezone
 from babel.dates import format_datetime

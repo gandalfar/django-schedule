@@ -72,7 +72,6 @@ class tracksplugin(plugin):
         
     def getFeed(self,list):
         url = "%s/todos.xml" % (list.api_url)
-        
         # debug
         print "URL:%s" % url
         
@@ -90,6 +89,12 @@ class tracksplugin(plugin):
         # debug
         print "Found %s tasks" % len(Tasks)
         return Tasks
+    
+    #def getDate(self, 
+    #    
+    
+    def updateItem(self, item):
+        pass
         
     def MatchItems(self,list):
         Tasks = self.getExternalTasks(self.getFeed(list))
@@ -97,9 +102,9 @@ class tracksplugin(plugin):
             """ http://www.djangoproject.com/documentation/models/get_or_create/ """
             #item = Item.objects.get(list=list, ext_id=task.find("id").text)
             if Item.objects.filter(list=list, ext_id=task.find("id").text).count() > 0:
-                #print "%s %s objekt obstaja"
+                print "%s %s objekt obstaja" % (task.find("id").text, task.find("description").text)
                 """ let's update objects """
-                update(Item.objects.get(list=list, ext_id=task.find("id").text))
+                self.updateItem(Item.objects.get(list=list, ext_id=task.find("id").text))
             else:
                 print "%s %s ne obstaja" % (task.find("id").text, task.find("description").text)
                 ## FIXME!! FIXME!! FIXME!!
@@ -119,22 +124,41 @@ class tracksplugin(plugin):
                 brakes smtg, because of br0ken string in source or
                 smtg.
                 """
+                
                 user = User.objects.all().order_by('id')[0]
-                new = Item(title=task.find("description").text,list=list, 
-                        created_date=task.find("created-at").text, created_by=user, 
-                        assigned_to=user, priority=999)
+                
+                ##print "%s %s" % (task.find("id").text, task.find("due").text)
+                ##print task.find("due").text
+                
+                """
+                FIXME:  Need to parse original dates from XML into django/pyhon
+                        format, just when it's needed.
+                """
+                
+                if task.find("due").text == "":
+                    new = Item(title=task.find("description").text,list=list,
+                    ext_id=task.find("id").text,
+                    created_date=task.find("created-at").text, created_by=user, 
+                    assigned_to=user, priority=999)
+                else:
+                    new = Item(title=task.find("description").text,list=list,
+                    ext_id=task.find("id").text,
+                    created_date=task.find("created-at").text, created_by=user, 
+                    assigned_to=user, priority=999)
                 
                 ## Some debugging about date
-                self.log.append("0: %s " % (new.title))
-                self.log.append("1: %s\t\t%s" % (task.find("due").text, new.due_date))
-                self.log.append("2: %s\t\t%s" % (task.find("created-at").text, new.created_date))
+                self.log.append("0: %s  <br>" % (new.title))
+                self.log.append("1: %s  %s<br>" % (task.find("due").text, new.due_date))
+                self.log.append("2: %s  %s<br>" % (task.find("created-at").text, new.created_date))
                 
                 """ 
                 FIXME:  when saved create_date will be changed to now(), since
                 default self.save method is defined that way. In future we might 
                 need a workaround
                 """
-                new.save()
+                
+                #new.altsave()
+                new.save() 
                 
     def __init__(self, list):
         print "Initializing Tracks plugin"

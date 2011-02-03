@@ -106,7 +106,8 @@ $(document).ready(function() {
             <th>Due on</th>                         
             <th>Owner</th> 
             <th>Assigned</th>   
-            <th>Note</th>   
+            <th>Note</th>
+            <th>Effort SUM</th>   
             <th>Comm</th>                            
  
             {% ifequal list_slug "mine" %}
@@ -115,6 +116,7 @@ $(document).ready(function() {
                                  
             <th>Del</th>             
         </tr>
+        
 		{% for task in task_list %}
 	        <tr class="{% cycle 'row1' 'row2' %}" id="{{ task.id }}">
 	            <td><input type="checkbox" name="mark_done" value="{{ task.id }}" id="mark_done_{{ task.id }}">   </td> 
@@ -128,6 +130,7 @@ $(document).ready(function() {
 	            <td>{{ task.created_by }}</td> 
 	            <td>{{ task.assigned_to }}</td>
 	            <td style="text-align:center;">{% if task.note %}&asymp;{% endif %} </td>
+                <td>{{ task.sum_efforts }}</td>
 	            <td style="text-align:center;">{% ifnotequal task.comment_set.all.count 0  %}{{ task.comment_set.all.count }}{% endifnotequal %}
                    
 	            </td>	            

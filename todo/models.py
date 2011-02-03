@@ -110,6 +110,12 @@ class Item(models.Model):
     def __unicode__(self):
         return self.title
         
+    #def effort(self):
+    #    sum = 0;
+    #    for effort in Effort.objects.filter(self):
+    #        sum = sum + effort.duration
+    #    return sum
+        
     # Auto-set the item creation / completed date
     def save(self):
         # Set datetime on initial item save 
@@ -117,6 +123,13 @@ class Item(models.Model):
             self.created_date = datetime.datetime.now()
             
         # If Item is being marked complete, set the completed_date
+        if self.completed :
+            self.completed_date = datetime.datetime.now()
+        super(Item, self).save()
+        
+    # alternative auto-save metheod that does nto change the creation
+    # date to now()
+    def altsave(self):
         if self.completed :
             self.completed_date = datetime.datetime.now()
         super(Item, self).save()
@@ -148,7 +161,7 @@ class Effort(models.Model):
 	TODO
 	"""
 	author = models.ForeignKey(User)
-	task = models.ForeignKey(Item)
+	task = models.ForeignKey(Item, related_name='effort')
 	date = models.DateTimeField(default=datetime.datetime.now)
 	body = models.TextField(blank=True)
     # Adds effort in time
@@ -156,7 +169,7 @@ class Effort(models.Model):
     
     
 	def __unicode__(self):        
-		return '%s - %s' % (
+		return '%s - %s - %s' % (
 			self.author, 
 			self.date,
 			self.duration,
