@@ -7,3 +7,12 @@
 django_schedule.egg-info
 *.svn*
 .svn*
+.installed.cfg
+bin
+develop-eggs
+dist
+downloads
+eggs
+parts
+src/*.egg-info
+.*
